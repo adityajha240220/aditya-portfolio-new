@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head><title>Contact</title></head>
+<body>
+  <h2>Send me a message</h2>
+  {% if success %}<p style="color:green;">Message sent successfully!</p>{% endif %}
+  <form method="post">
+    {% csrf_token %}
+    <input name="name" placeholder="Your Name"><br>
+    <input name="email" placeholder="Your Email"><br>
+    <textarea name="message" placeholder="Your Message"></textarea><br>
+    <button type="submit">Send</button>
+  </form>
+</body>
+</html>

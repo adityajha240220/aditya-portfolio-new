@@ -1,0 +1,572 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aditya Aman - Full Stack Developer</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+<!--    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">-->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a202c; /* Dark background fallback */
+            background-image: url('https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); /* Dark, abstract tech background */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #e2e8f0; /* Light gray text for contrast */
+            overflow-x: hidden; /* Prevent horizontal scrolling caused by background or overflowing elements */
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            box-sizing: border-box; /* Ensure padding is included in element's total width/height */
+        }
+        .section-title {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #cbd5e0; /* Lighter title color */
+            background-color: rgba(26, 32, 44, 0.8); /* Darker transparent background for readability */
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -8px;
+            width: 60px;
+            height: 4px;
+            background-color: #667eea; /* Accent color - slightly brighter blue */
+            border-radius: 9999px;
+        }
+        .nav-link {
+            transition: color 0.3s ease, transform 0.3s ease;
+            color: #cbd5e0; /* Light gray for nav links */
+        }
+        .nav-link:hover {
+            color: #667eea; /* Accent color on hover */
+            transform: translateY(-2px);
+        }
+        .btn-primary {
+            background-color: #667eea; /* Accent color */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #5a67d8; /* Darker accent on hover */
+            transform: translateY(-2px);
+        }
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background-color: rgba(45, 55, 72, 0.9); /* Darker transparent background for cards */
+            border: 1px solid rgba(74, 85, 104, 0.5); /* Subtle border */
+            color: #e2e8f0; /* Light text for card content */
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+        }
+        input, textarea {
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            background-color: #2d3748; /* Darker input background */
+            color: #e2e8f0; /* Light text for input */
+            border-color: #4a5568; /* Darker border */
+        }
+        input:focus, textarea:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
+            outline: none;
+        }
+        /* Keyframe animations for hero section */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .animate-fade-in-down {
+            animation: fadeInDown 0.8s ease-out forwards;
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards 0.2s; /* Delayed start */
+        }
+        .animate-scale-in {
+            animation: scaleIn 0.8s ease-out forwards 0.4s; /* Delayed start */
+        }
+        /* Section background for contrast against the body background */
+        section:nth-of-type(even) {
+            background-color: rgba(26, 32, 44, 0.7); /* Darker with transparency */
+        }
+        section:nth-of-type(odd) {
+            background-color: rgba(45, 55, 72, 0.7); /* Even darker with transparency */
+        }
+        /* Adjusting hero section background to be fully opaque for strong visual */
+        #home {
+            background-color: #1a202c; /* Dark solid color */
+            background-image: linear-gradient(to br, #1a202c, #2d3748); /* Darker gradient */
+            opacity: 1; /* Ensure full opacity */
+        }
+        /* Ensure contact info section also has a solid background for readability */
+        .py-8.bg-white.shadow-sm {
+            background-color: #1a202c; /* Dark solid for contact info */
+            opacity: 1;
+            color: #e2e8f0;
+        }
+        .py-8.bg-white.shadow-sm p {
+            color: #e2e8f0;
+        }
+        .py-8.bg-white.shadow-sm svg {
+            color: #667eea; /* Accent color for icons */
+        }
+
+        /* Adjust specific text colors for better contrast on dark backgrounds */
+        .text-gray-700 {
+            color: #cbd5e0; /* Light gray for general text */
+        }
+        .text-gray-900 {
+            color: #f7fafc; /* White for headings */
+        }
+        .text-indigo-600 {
+            color: #667eea; /* Accent color for links/highlights */
+        }
+        .text-yellow-200 {
+            color: #fbd38d; /* Complementary highlight color */
+        }
+        .text-gray-500 {
+            color: #a0aec0; /* Slightly darker light gray for dates/secondary info */
+        }
+        .text-gray-800 {
+            color: #e2e8f0; /* Light gray for tech stack */
+        }
+
+        /* Specific style for the profile image container to ensure proper framing and blending */
+        .profile-img-container {
+            width: 224px; /* Fixed width for the circle (w-56) */
+            height: 224px; /* Fixed height for the circle (h-56) */
+            border-radius: 9999px; /* Make it a perfect circle */
+            overflow: hidden; /* Clip content outside the circle */
+            background-color: #1a202c; /* Dark background to blend with body/section theme */
+            display: flex; /* Use flexbox to center content */
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1); /* Enhanced shadow */
+            border: 4px solid #667eea; /* Border color */
+        }
+
+        .profile-img-container img {
+            width: 100%; /* Image fills its circular container */
+            height: 100%;
+            object-fit: cover; /* Ensures image covers the area, cropping if necessary */
+            object-position: top; /* Focus on the top part of the image (your face) */
+            border-radius: 9999px; /* Ensure the image itself is also rounded within the container */
+        }
+
+        /* Mobile-specific adjustments */
+        @media (max-width: 767px) { /* Applies to screens smaller than md (768px) */
+            .container {
+                padding: 1rem; /* Reduce padding on smaller screens */
+            }
+            .section-title {
+                font-size: 2rem; /* Smaller title font size */
+                padding: 0.3rem 0.8rem;
+            }
+            .nav-menu {
+                display: none; /* Hide desktop navigation on mobile */
+            }
+            .header-content {
+                flex-direction: column; /* Stack header items vertically */
+                align-items: center;
+            }
+            .header-content .text-2xl {
+                margin-bottom: 1rem; /* Add space below logo */
+            }
+            #home h1 {
+                font-size: 3rem; /* Adjust hero title size */
+            }
+            #home p {
+                font-size: 1.25rem; /* Adjust hero subtitle size */
+            }
+            .profile-img-container {
+                width: 180px; /* Slightly smaller image container on mobile */
+                height: 180px;
+            }
+            .md\:w-1\/4, .md\:w-3\/4 {
+                width: 100%; /* Make about section content take full width on mobile */
+            }
+            .md\:space-x-12 {
+                margin-left: 0;
+                margin-right: 0;
+            }
+            .flex-col.md\:flex-row {
+                flex-direction: column;
+            }
+            .md\:mb-0 {
+                margin-bottom: 1rem;
+            }
+            .grid-cols-1.md\:grid-cols-2, .grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3 {
+                grid-template-columns: 1fr; /* Single column for grids on mobile */
+            }
+            .flex-wrap.justify-center.gap-6 {
+                gap: 0.5rem; /* Reduce gap for soft skills/languages */
+            }
+            .flex.space-x-8 {
+                flex-direction: column; /* Stack nav links vertically if they appear */
+                align-items: center;
+                space-x: 0; /* Remove horizontal space */
+                gap: 0.5rem; /* Add vertical space */
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header -->
+    <header class="bg-gray-900 shadow-sm py-4 sticky top-0 z-50">
+        <div class="container flex justify-between items-center header-content">
+            <div class="text-2xl font-bold text-gray-100 rounded-lg p-2 bg-gradient-to-r from-blue-700 to-indigo-800 shadow-md">
+                Aditya Aman
+            </div>
+            <nav class="nav-menu">
+                <ul class="flex space-x-8">
+                    <li><a href="#home" class="nav-link text-gray-300 hover:text-blue-400 font-medium">Home</a></li>
+                    <li><a href="#about" class="nav-link text-gray-300 hover:text-blue-400 font-medium">About</a></li>
+                    <li><a href="#experience" class="nav-link text-gray-300 hover:text-blue-400 font-medium">Experience</a></li>
+                    <li><a href="#projects" class="nav-link text-gray-300 hover:text-blue-400 font-medium">Projects</a></li>
+                    <li><a href="#skills" class="nav-link text-gray-300 hover:text-blue-400 font-medium">Skills</a></li>
+                    <li><a href="#education-awards" class="nav-link text-gray-300 hover:text-blue-400 font-medium">Education & Awards</a></li>
+                    <li><a href="#contact" class="nav-link text-gray-300 hover:text-blue-400 font-medium">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="bg-gradient-to-br from-gray-900 to-gray-800 text-white py-20 md:py-32 text-center rounded-b-lg shadow-lg">
+        <div class="container">
+            <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4 animate-fade-in-down">
+                Hello, I'm <span class="text-yellow-300">Aditya Aman</span>
+            </h1>
+            <p class="text-xl md:text-2xl font-light mb-8 animate-fade-in-up">
+                Full Stack Developer In Training
+            </p>
+            <a href="#projects" class="btn-primary inline-block text-lg font-semibold shadow-lg hover:shadow-xl animate-scale-in">
+                View My Work
+            </a>
+        </div>
+    </section>
+
+    <!-- Contact Info (Quick Access) -->
+    <section class="py-8 bg-gray-900 shadow-sm">
+        <div class="container text-center text-gray-300 flex flex-wrap justify-center gap-4">
+            <p class="flex items-center"><svg class="w-5 h-5 mr-2 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg> +91 8802120045</p>
+            <p class="flex items-center"><svg class="w-5 h-5 mr-2 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg> adityajha240220@gmail.com</p>
+        </div>
+    </section>
+
+    <!-- About Me Section -->
+<section id="about" class="py-16 md:py-24">
+    <div class="container">
+        <h2 class="section-title text-center mb-12">About Me</h2>
+        <div class="flex flex-col md:flex-row items-center md:space-x-12">
+            <div class="md:w-1/4 mb-8 md:mb-0 flex justify-center">
+                <div class="profile-img-container">
+                    <img src="{% static 'images/Aditya Pic Formal.jpg' %}" alt="Aditya Aman Photo">
+                </div>
+            </div>
+            <div class="md:w-3/4 text-lg leading-relaxed text-gray-300">
+                <p class="mb-4">
+                    As a passionate CSE student, I am driven by the intersection of artificial intelligence and robust web solutions. My goal is to leverage my full-stack expertise and prompt engineering skills to build innovative applications that solve real-world problems and enhance user experiences.
+                </p>
+                <p>
+                    I am dedicated to continuous learning and applying my strong analytical skills to overcome complex challenges in the tech landscape.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="py-16 md:py-24">
+        <div class="container">
+            <h2 class="section-title text-center mb-12">Work Experience</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Experience 1: AI & Full Stack Intern -->
+                <div class="bg-gray-800 p-8 rounded-lg shadow-md card">
+                    <div class="flex justify-between items-start mb-2">
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-100">AI & Full Stack Intern</h3>
+                            <p class="text-blue-400 font-medium">De Silent Order</p>
+                        </div>
+                        <span class="text-gray-400 text-sm">Jun 2025 - Present</span>
+                    </div>
+                    <ul class="list-disc list-inside text-gray-300 space-y-2">
+                        <li>Created PDF tools and AI-driven web modules with Django and FastAPI.</li>
+                        <li>Integrated LangChain and LLMs into various projects, enhancing capabilities like AI Travel Planner.</li>
+                        <li>Led backend API integration efforts to optimize application performance.</li>
+                        <li>Partnered on frontend design using HTML, CSS, and JavaScript to elevate interface quality.</li>
+                    </ul>
+                </div>
+
+                <!-- Experience 2: Frontend & Backend Developer Intern -->
+                <div class="bg-gray-800 p-8 rounded-lg shadow-md card">
+                    <div class="flex justify-between items-start mb-2">
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-100">Frontend & Backend Developer Intern</h3>
+                            <p class="text-blue-400 font-medium">VrixaaLabs Private Limited</p>
+                        </div>
+                        <span class="text-gray-400 text-sm">May 2025 - Jul 2025</span>
+                    </div>
+                    <ul class="list-disc list-inside text-gray-300 space-y-2">
+                        <li>Developed responsive user interfaces using JavaScript, HTML, and CSS.</li>
+                        <li>Created and integrated Django REST APIs for backend functionality.</li>
+                        <li>Ensured seamless frontend-backend interaction and optimized overall app performance.</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-16 md:py-24">
+        <div class="container">
+            <h2 class="section-title text-center mb-12">My Projects</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project Card: AI Travel Planner -->
+                <div class="bg-gray-800 rounded-lg shadow-md overflow-hidden card">
+                    <img src="https://placehold.co/600x400/334155/667eea?text=AI+Travel+Planner" alt="AI Travel Planner" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-100 mb-2">AI Travel Planner</h3>
+                        <p class="text-gray-300 text-sm mb-4">
+                            Developed a smart travel assistant that generates itineraries using Gemini for contextual AI responses and Wikipedia for detailed summaries. Built an interactive frontend using Streamlit, styled with HTML, CSS, JavaScript, and integrated SerpAPI for real-time location data.
+                        </p>
+                        <p class="text-gray-200 text-xs font-semibold mb-2">Tech Stack: Python, Streamlit, Gemini API, SerpAPI, Wikipedia API, HTML, CSS, JavaScript</p>
+                        <a href="https://github.com/adityajha240220/AI-Travel-Planner" target="_blank" class="text-blue-400 hover:text-blue-300 font-medium text-sm flex items-center">
+                            GitHub Repository <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Project Card: PDF Tools Suite (Web App) -->
+                <div class="bg-gray-800 rounded-lg shadow-md overflow-hidden card">
+                    <img src="https://placehold.co/600x400/334155/667eea?text=PDF+Tools+Suite" alt="PDF Tools Suite" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-100 mb-2">PDF Tools Suite (Web App)</h3>
+                        <p class="text-gray-300 text-sm mb-4">
+                            Django backend for watermarking, organizing, compressing, rotating, and previewing PDFs using PyPDF2 and pdf.js.
+                        </p>
+                        <p class="text-gray-200 text-xs font-semibold mb-2">Tech Stack: Django, PyPDF2, pdf.js</p>
+                        <a href="#" class="text-blue-400 hover:text-blue-300 font-medium text-sm">
+                            View Project &rarr;
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Project Card: Full Stack Event Manager (In Progress) -->
+                <div class="bg-gray-800 rounded-lg shadow-md overflow-hidden card">
+                    <img src="https://placehold.co/600x400/334155/667eea?text=Event+Manager" alt="Full Stack Event Manager" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-100 mb-2">Full Stack Event Manager (In Progress)</h3>
+                        <p class="text-gray-300 text-sm mb-4">
+                            Developing a web platform using Next.js and Django for creating and managing events in real time. Implementing features like user authentication, live updates, and real-time notifications.
+                        </p>
+                        <p class="text-gray-200 text-xs font-semibold mb-2">Tech Stack: Next.js, Django, Python, JavaScript, HTML, CSS</p>
+                        <a href="#" class="text-blue-400 hover:text-blue-300 font-medium text-sm">
+                            View Project &rarr;
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Project Card: Cards Slider (New Project) -->
+                <div class="bg-gray-800 rounded-lg shadow-md overflow-hidden card">
+                    <img src="https://placehold.co/600x400/334155/667eea?text=Cards+Slider" alt="Cards Slider Project" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-100 mb-2">Interactive Cards Slider</h3>
+                        <p class="text-gray-300 text-sm mb-4">
+                            A dynamic and responsive card slider implemented purely with HTML, CSS, and JavaScript, showcasing smooth transitions and user interaction.
+                        </p>
+                        <p class="text-gray-200 text-xs font-semibold mb-2">Tech Stack: HTML, CSS, JavaScript</p>
+                        <a href="#" class="text-blue-400 hover:text-blue-300 font-medium text-sm">
+                            View Project &rarr;
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-16 md:py-24">
+        <div class="container">
+            <h2 class="section-title text-center mb-12">Technical Skills</h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 text-center">
+                <!-- Programming Languages -->
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md card flex flex-col items-center">
+                    <svg class="w-12 h-12 text-blue-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                    <h3 class="text-lg font-semibold text-gray-100">Programming Languages</h3>
+                    <p class="text-gray-300 text-sm mt-2">Python, JavaScript</p>
+                </div>
+                <!-- Web Development -->
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md card flex flex-col items-center">
+                    <svg class="w-12 h-12 text-blue-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                    <h3 class="text-lg font-semibold text-gray-100">Web Development</h3>
+                    <p class="text-gray-300 text-sm mt-2">HTML, CSS, JavaScript, Next.js (Learning)</p>
+                </div>
+                <!-- Backend Frameworks & APIs -->
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md card flex flex-col items-center">
+                    <svg class="w-12 h-12 text-blue-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    <h3 class="text-lg font-semibold text-gray-100">Backend Frameworks & APIs</h3>
+                    <p class="text-gray-300 text-sm mt-2">Django, FastAPI</p>
+                </div>
+                <!-- Databases -->
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md card flex flex-col items-center">
+                    <svg class="w-12 h-12 text-blue-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10m0 0l4-4m-4 4l4 4m0-12h8m0 0l4-4m-4 4l4 4"></path></svg>
+                    <h3 class="text-lg font-semibold text-gray-100">Databases</h3>
+                    <p class="text-gray-300 text-sm mt-2">SQL, SQLite</p>
+                </div>
+                <!-- Development Tools -->
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md card flex flex-col items-center">
+                    <svg class="w-12 h-12 text-blue-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    <h3 class="text-lg font-semibold text-gray-100">Development Tools</h3>
+                    <p class="text-gray-300 text-sm mt-2">VS Code, PyCharm, Postman, Git, Google Colab</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Soft Skills Section -->
+    <section id="soft-skills" class="py-16 md:py-24">
+        <div class="container">
+            <h2 class="section-title text-center mb-12">Soft Skills</h2>
+            <div class="flex flex-wrap justify-center gap-6 text-lg text-gray-300">
+                <span class="bg-gray-800 px-6 py-3 rounded-full shadow-md">Problem-Solving</span>
+                <span class="bg-gray-800 px-6 py-3 rounded-full shadow-md">Teamwork & Collaboration</span>
+                <span class="bg-gray-800 px-6 py-3 rounded-full shadow-md">Communication</span>
+                <span class="bg-gray-800 px-6 py-3 rounded-full shadow-md">Adaptability</span>
+                <span class="bg-gray-800 px-6 py-3 rounded-full shadow-md">Analytical Thinking</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education & Awards Section -->
+    <section id="education-awards" class="py-16 md:py-24">
+        <div class="container">
+            <h2 class="section-title text-center mb-12">Education & Awards</h2>
+            <div class="space-y-8 mb-12">
+                <h3 class="text-2xl font-semibold text-gray-100 mb-4">Qualifications</h3>
+                <div class="bg-gray-800 p-8 rounded-lg shadow-md card">
+                    <h4 class="text-xl font-semibold text-gray-100 mb-2">B.Tech in Computer Science Engineering</h4>
+                    <p class="text-blue-400 font-medium">K-IIT College of Engineering | Gurugram</p>
+                    <p class="text-gray-400 text-sm mt-1">Aug 2022 - Present | CGPA: 8.5 (till now)</p>
+                </div>
+                <div class="bg-gray-800 p-8 rounded-lg shadow-md card">
+                    <h4 class="text-xl font-semibold text-gray-100 mb-2">Diploma in Mechanical Engineering</h4>
+                    <p class="text-blue-400 font-medium">Board of Technical Education | Ghaziabad</p>
+                    <p class="text-gray-400 text-sm mt-1">Aug 2017 - Jun 2021 | CGPA: 8.0</p>
+                </div>
+            </div>
+
+            <div class="space-y-8">
+                <h3 class="text-2xl font-semibold text-gray-100 mb-4">Certificates & Awards</h3>
+                <!-- Certificate 1 -->
+                <div class="bg-gray-800 p-8 rounded-lg shadow-md card">
+                    <h4 class="text-xl font-semibold text-gray-100 mb-2">Participated in IDE Bootcamp – Edition II</h4>
+                    <p class="text-blue-400 font-medium mb-3">SVNIT Surat (Sep 2024) and Tezpur University (Feb 2025)</p>
+                </div>
+                <!-- Award 1 -->
+                <div class="bg-gray-800 p-8 rounded-lg shadow-md card">
+                    <h4 class="text-xl font-semibold text-gray-100 mb-2">1st Prize in Anveshan 2025 at IIT Delhi (Apr 2025)</h4>
+                    <p class="text-blue-400 font-medium mb-3">Awarded by the Dr. APJ Abdul Kalam Foundation</p>
+                    <p class="text-gray-300">For the best innovative tech model.</p>
+                </div>
+                <!-- Award 2 -->
+                <div class="bg-gray-800 p-8 rounded-lg shadow-md card">
+                    <h4 class="text-xl font-semibold text-gray-100 mb-2">Certificate of Appreciation – National Technology Day (Jun 2025)</h4>
+                    <p class="text-blue-400 font-medium mb-3">Honored by KIIT College of Engineering</p>
+                    <p class="text-gray-300">For outstanding project presentation.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Languages Section -->
+    <section id="languages" class="py-16 md:py-24">
+        <div class="container">
+            <h2 class="section-title text-center mb-12">Languages</h2>
+            <div class="flex flex-wrap justify-center gap-6 text-lg text-gray-300">
+                <span class="bg-gray-800 px-6 py-3 rounded-full shadow-md">English</span>
+                <span class="bg-gray-800 px-6 py-3 rounded-full shadow-md">Hindi</span>
+                <span class="bg-gray-800 px-6 py-3 rounded-full shadow-md">Maithili</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 md:py-24">
+        <div class="container">
+            <h2 class="section-title text-center mb-12">Get In Touch</h2>
+            <div class="max-w-xl mx-auto bg-gray-800 p-8 rounded-lg shadow-md">
+                <p class="text-center text-gray-300 mb-6">
+                    Have a question or want to work together? Feel free to reach out!
+                </p>
+                <form method="POST" action="{% url 'send_email' %}" class="space-y-6">
+
+                     {% csrf_token %}
+
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-300 mb-1">Name</label>
+                        <input type="text" id="name" name="name" class="mt-1 block w-full px-4 py-2 border border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Your Name">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-300 mb-1">Email</label>
+                        <input type="email" id="email" name="email" class="mt-1 block w-full px-4 py-2 border border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="you@example.com">
+                    </div>
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-gray-300 mb-1">Message</label>
+                        <textarea id="message" name="message" rows="5" class="mt-1 block w-full px-4 py-2 border border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Your message..."></textarea>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn-primary inline-flex items-center justify-center font-semibold text-lg shadow-lg hover:shadow-xl">
+                            Send Message
+                        </button>
+                    </div>
+                </form>
+                <div class="text-center mt-8">
+                    <a href="https://raw.githubusercontent.com/adityajha240220/Aditya-Resume/main/Aditya%20Resume%20(Full%20Stack).pdf" download class="btn-primary inline-flex items-center justify-center font-semibold text-lg shadow-lg hover:shadow-xl">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        Download Resume
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-300 py-8 text-center rounded-t-lg shadow-inner">
+        <div class="container">
+            <p class="text-sm">&copy; 2025 Aditya Aman. All rights reserved.</p>
+            <div class="flex justify-center space-x-6 mt-4">
+                <a href="https://www.linkedin.com/in/aditya-aman-06a998289/" target="_blank" class="text-gray-400 hover:text-blue-400 transition-colors duration-300">LinkedIn</a>
+                <a href="https://github.com/adityajha240220" target="_blank" class="text-gray-400 hover:text-blue-400 transition-colors duration-300">GitHub</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
