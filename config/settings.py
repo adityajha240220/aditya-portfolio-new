@@ -39,6 +39,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'config.urls'
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://aditya-portfolio-new.onrender.com",
+]
+
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
